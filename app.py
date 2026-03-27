@@ -1,7 +1,7 @@
 """
 Simple Python Microservice using Flask
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 import logging
 from datetime import datetime
 
@@ -101,3 +101,14 @@ if __name__ == '__main__':
     # Run the Flask app
     # NOTE: In production, use a WSGI server like Gunicorn instead of Flask's development server
     app.run(host='0.0.0.0', port=5000, debug=False)
+
+
+# --- UI ROUTE ---
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    result = None
+    if request.method == 'POST':
+        user_input = request.form.get('input', '')
+        # Example: Use the greet logic for demo
+        result = f'Hello, {user_input}!' if user_input else 'Hello, World!'
+    return render_template('index.html', result=result)
