@@ -35,9 +35,9 @@ def greet():
     try:
         data = request.get_json()
         name = data.get('name', 'World') if data else 'World'
-        
+
         logger.info(f'Greeting request received for: {name}')
-        
+
         return jsonify({
             'message': f'Hello, {name}!',
             'timestamp': datetime.utcnow().isoformat()
@@ -99,9 +99,9 @@ def internal_error(error):
 
 if __name__ == '__main__':
     # Run the Flask app
-    # NOTE: In production, use a WSGI server like Gunicorn instead of Flask's development server
+    # NOTE: In production, use a WSGI server like Gunicorn instead of
+    # Flask's development server
     app.run(host='0.0.0.0', port=5000, debug=False)
-
 
 # --- UI ROUTE ---
 @app.route('/', methods=['GET', 'POST'])
