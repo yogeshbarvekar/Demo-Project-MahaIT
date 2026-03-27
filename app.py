@@ -96,12 +96,12 @@ def internal_error(error):
     logger.error(f'Internal server error: {str(error)}')
     return jsonify({'error': 'Internal server error'}), 500
 
-
 if __name__ == '__main__':
     # Run the Flask app
     # NOTE: In production, use a WSGI server like Gunicorn instead of
     # Flask's development server
     app.run(host='0.0.0.0', port=5000, debug=False)
+
 
 # --- UI ROUTE ---
 @app.route('/', methods=['GET', 'POST'])
