@@ -3,9 +3,13 @@ Simple Python Microservice using Flask
 """
 from flask import Flask, jsonify, request, render_template
 import logging
+import os
 from datetime import datetime
 
 app = Flask(__name__)
+
+# Bucket name for microservice (can be overridden with environment variable)
+BUCKET_NAME = os.getenv('BUCKET_NAME', 'python-microservice-bucket')
 
 # Configure logging
 logging.basicConfig(
@@ -78,6 +82,26 @@ def echo():
     except Exception as e:
         logger.error(f'Error processing echo request: {str(e)}')
         return jsonify({'error': 'Invalid request'}), 400
+
+
+@app.route('/api/bucket', methods=['GET', 'POST'])
+def bucket():
+    """
+    Bucket endpoint: read/set bucket name
+    """
+    global BUCKET_NAME
+    if request.method == 'POST':
+        data = request.get_json() or {}
+        new_name = data.get('name')
+        if not new_name:
+            return jsonify({'error': 'Bucket name is required under "name" key'}), 400
+
+        logger.info(f'Bucket name update requested: {new_name}')
+        BUCKET_NAME = new_name
+        return jsonify({'bucket': BUCKET_NAME, 'message': 'Bucket name updated'}), 200
+
+    logger.info(f'Bucket name requested: {BUCKET_NAME}')
+    return jsonify({'bucket': BUCKET_NAME, 'source': 'config/env'}), 200
 
 
 @app.errorhandler(404)
