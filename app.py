@@ -98,6 +98,7 @@ def bucket():
                 'error': 'Bucket name is required under "name" key'
             }), 400
 
+
         logger.info(f'Bucket name update requested: {new_name}')
         BUCKET_NAME = new_name
         return jsonify({
